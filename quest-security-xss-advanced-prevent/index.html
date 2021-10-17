@@ -109,7 +109,8 @@
 
         //  XSS vulnerability #3
 
-        const htmlInput = document.getElementById("html-input");
+        htmlOutput.innerHTML = encodeHtml(htmlInput.value);
+      #  const htmlInput = document.getElementById("html-input");
         const htmlOutput = document.getElementById("html-output");
         const showButton = document.getElementById("show-html");
 
