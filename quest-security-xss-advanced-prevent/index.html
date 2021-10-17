@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
+    <!--
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self';" >
+-->
     <title>XSS</title>
 
     <link rel="stylesheet" type="text/css" href="vendors/bootstrap.min.css">
@@ -18,8 +20,7 @@
         <img src="img/tea.png" style="width: 130px; float:right; position:relative; left:50px;">
         <div style="background-color: rgba(32, 163, 158, 0.8); margin-top: 2%; border-radius: 5px; padding: 1% 5%;">
             <!-- XSS vulnerability #1
-
-                    Hack hint: typing <script>alert(1)</script> in the url bar won't work, 
+                    Hack hint: typing <script>alert(1)</script> in the url bar won't work,
                     but unfortunately, typing something like <img src=" " onerror="alert(1)"> will! -->
 
             <p class="text-center" id="welcome-text"></p>
@@ -33,7 +34,6 @@
             </h5>
 
             <!-- XSS vulnerability #2
-
                     Hack hint: typing something like <img src=" " onerror="alert(1)"> will work! -->
 
             <p><strong>Sherlock:</strong> What is your favorite meal?</p>
@@ -53,7 +53,6 @@
             <div class="row">
 
                 <!-- XSS vulnerability #3
-
                         Hack hint: typing something like <img src=" " onerror="alert(1)"> will work! -->
 
                 <div class="col-md-4">
@@ -69,7 +68,6 @@
 
 
             <!-- XSS vulnerability #4
-
                     Hack hint: using javascript pseudo-protocol by typing goto=javascript:alert(1) in the url bar will work! -->
 
             <p class="text-center" style="margin-top: 3%;">
@@ -93,10 +91,10 @@
         userName = "applicant";
 
         if (userParam !== null) {
-            userName = userParam;
+            userName = encodeURIComponent(userParam);
         }
 
-        document.getElementById("welcome-text").innerText = "<h1>How do you do, " + userName + "?</h1>";
+        document.getElementById("welcome-text").innerHTML = "<h1>How do you do, " + userName + "?</h1>";
 
         //  XSS vulnerability #2
 
@@ -117,21 +115,15 @@
 
         showButton.addEventListener("click", showHTML);
 
-
         function showHTML() {
-        if (sentence.htmlInput('alert') >= 0) {
-        } else {
-          htmlOutput.innerHTML = htmlInput.value;
-        }
-
-
+            htmlOutput.innerText = htmlInput.value;
         }
 
         //  XSS vulnerability #4
 
         const redir = params.get("goto");
         if (redir !== null && redir !== "null") {
-            document.location = redir;
+            document.location = encodeURIComponent(redir);
         }
 
     </script>
